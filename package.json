@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/briandlafond/tinyapp/issues"
   },
-  "homepage": "https://github.com/briandlafond/tinyapp#readme"
+  "homepage": "https://github.com/briandlafond/tinyapp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
