@@ -43,6 +43,7 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
+  console.log(req.params.shortURL);
   const templateVars = { shortURL: req.params.shortURL, longURL: req.params.longURL };
   res.render("urls_show", templateVars);
 });
@@ -50,10 +51,18 @@ app.get("/urls/:shortURL", (req, res) => {
 app.post("/urls", (req, res) => {
   console.log(req.body);  // Log the POST request body to the console
   const shortURL = generateRandomString(6);
-  const longURL = req.body.longURL;
+  let longURL = req.body.longURL;
+  if (!longURL.includes('http')) {
+    longURL = `http://${longURL}`
+  }
   urlDatabase[shortURL] = longURL //adds key: value to urlDatabase object
-  //console.log(urlDatabase);
-  res.send("Ok");  // end
+  res.redirect(`/urls/${shortURL}`);
+});
+
+app.get("/u/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL]
+  res.redirect(longURL);
 });
 
 app.listen(PORT, () => {
