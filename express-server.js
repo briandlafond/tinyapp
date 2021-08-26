@@ -12,25 +12,14 @@ const urlDatabase = {
   "esm5xK": "http://www.google.com"
 };
 
-app.get("/", (req, res) => { // / = home page or root
-  res.send("Hello!");
+// routes below
+
+app.get("/", (req, res) => {      // "/" = routes to home page or root
+  res.send("Hello!");             // response from server
 });
 
 app.get("/urls.json", (req, res) => {
   res.json(urlDatabase);
-});
-
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n");
-});
-
-app.get("/set", (req, res) => {
-  const a = 1;
-  res.send(`a = ${a}`);
-});
- 
-app.get("/fetch", (req, res) => {
-  res.send(`a = ${a}`);
 });
 
 app.get("/urls/new", (req, res) => {
@@ -43,13 +32,11 @@ app.get("/urls", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  console.log(req.params.shortURL);
   const templateVars = { shortURL: req.params.shortURL, longURL: req.params.longURL };
   res.render("urls_show", templateVars);
 });
 
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
   const shortURL = generateRandomString(6);
   let longURL = req.body.longURL;
   if (!longURL.includes('http')) {
@@ -71,8 +58,16 @@ app.post("/urls/:shortURL/delete", (req, res) => {
   res.redirect('/urls');
 });
 
+app.post("/urls/:id", (req, res) => {
+  let shortURL = req.params.id;
+  let newURL = `http://${req.body.newURL}`; //req.body is the input from field
+  urlDatabase[shortURL] = newURL;
+  res.redirect('/urls');
+});
+
+
 app.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`app listening on port ${PORT}!`);
 });
 
 
