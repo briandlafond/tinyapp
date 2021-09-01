@@ -1,32 +1,16 @@
 const express = require("express");
-const app = express(); //app = server
-const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 
-app.use(bodyParser.urlencoded({extended: true}));
+const app = express(); //app = server
+const PORT = 8000; // default port 8080
+
 app.set("view engine", "ejs");
+app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-
-const urlDatabase = {
-  "b2xVn2": "http://www.lighthouselabs.ca",
-  "esm5xK": "http://www.google.com"
-};
-
-
-const users = { 
-  "user123": {
-    id: "user123", 
-    email: "user@example.com", 
-    password: "purple-monkey-dinosaur"
-  },
- "user456": {
-    id: "user456", 
-    email: "user2@example.com", 
-    password: "dishwasher-funk"
-  }
-}
+const urlDatabase = {};
+const users = {};
 
 // ***** ROUTES *****
 
@@ -57,7 +41,7 @@ app.get("/login", (req, res) => {
     user: users[userID],
     userID: userID,
     urls: urlDatabase
-  };  
+  };
   res.render("urls_login", templateVars);
 });
 
@@ -79,16 +63,23 @@ app.get("/urls", (req, res) => {
     urls: urlDatabase
   };
   res.render("urls_index", templateVars);
-}); 
+});
 
 
 app.get("/urls/:shortURL", (req, res) => {
-  const templateVars = { 
-    shortURL: req.params.shortURL, 
-    longURL: req.params.longURL, 
+  const templateVars = {
+    shortURL: req.params.shortURL,
+    longURL: req.params.longURL,
     user: users
   };
   res.render("urls_show", templateVars);
+});
+
+
+app.get("/u/:shortURL", (req, res) => {
+  const shortURL = req.params.shortURL;
+  const longURL = urlDatabase[shortURL];
+  res.redirect(longURL);
 });
 
 
@@ -100,13 +91,6 @@ app.post("/urls", (req, res) => {
   }
   urlDatabase[shortURL] = longURL; //adds key: value to urlDatabase object
   res.redirect(`/urls/${shortURL}`);
-});
-
-
-app.get("/u/:shortURL", (req, res) => {
-  const shortURL = req.params.shortURL;
-  const longURL = urlDatabase[shortURL];
-  res.redirect(longURL);
 });
 
 
@@ -137,7 +121,7 @@ app.post("/register", (req, res) => {
     users[newUserID] = {   // *************** adds new user to users object
       id: newUserID,
       email: submittedEmail,
-      password: submittedPassword,
+      password: submittedPassword
     };
   }
   res.cookie('user_id', newUserID);
@@ -150,15 +134,15 @@ app.post("/login", (req, res) => {
   let submittedPassword =  req.body.password;
 
   if (!submittedEmail || !submittedPassword) {
-    return res.status(403).send("Please enter both email and password");
-  } 
+    return res.status(403).send("Please enter both email and password.");
+  }
   const user = emailHasUser(submittedEmail, users);
   if (!user) {
-    return res.status(403).send("invalid email");
+    return res.status(403).send("Invalid email, please register for TinyApp.");
   }
 
   if (user.password !== submittedPassword) {
-    return res.status(403).send("invalid password");
+    return res.status(403).send("Invalid password, please try again.");
   }
 
   res.cookie('user_id', user.id);
@@ -172,6 +156,7 @@ app.post("/logout", (req, res) => {
   res.redirect('/urls');
 });
 
+
 app.listen(PORT, () => {
   console.log(`app listening on port ${PORT}!`);
 });
@@ -179,9 +164,7 @@ app.listen(PORT, () => {
 
 
 
-
-
-// ***** HELPER FUNCTIONS *****
+// // ***** HELPER FUNCTIONS *****
 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -201,12 +184,4 @@ const emailHasUser = function(email, users) {
     }
   }
   return false;
-};
-
-const userIdFromEmail = function(email, userDatabase) {
-  for (const user in userDatabase) {
-    if (userDatabase[user].email === email) {
-      return userDatabase[user].id;
-    }
-  }
 };
