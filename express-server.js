@@ -1,18 +1,19 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
-const { generateRandomString, emailHasUser, userIdFromEmail, urlsForUser, cookieHasUser, getUserByEmail } = require("./helpers");
 const bcrypt = require('bcrypt');
+const { generateRandomString, userIdFromEmail, urlsForUser, cookieHasUser, getUserByEmail } = require("./helpers");
 
-const app = express(); //app = server
-const PORT = 8080; // default port 8080
+const app = express();
+
+const PORT = 8080;
 
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
   name: 'session',
   keys: ['BRIAN'],
-  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  maxAge: 24 * 60 * 60 * 1000 // = 24 hours
 }));
 
 const urlDatabase = {};
@@ -20,7 +21,7 @@ const users = {};
 
 // ***** ROUTES *****
 
-app.get("/", (req, res) => {      // "/" = routes to home page or root
+app.get("/", (req, res) => {      // "/" = routes to home page or root.
   if (cookieHasUser(req.session.userID, users)) {
     res.redirect("/urls");
   } else {
@@ -41,7 +42,7 @@ app.get("/urls/new", (req, res) => {
     res.redirect("/login");
   } else {
     let templateVars = {
-    user: users[req.session.userID],
+      user: users[req.session.userID],
     };
     res.render("urls_new", templateVars);
   }
@@ -138,8 +139,8 @@ app.post("/register", (req, res) => {
   const submittedPassword = req.body.password;
   if (!submittedEmail || !submittedPassword) {
     res.status(400).send("Please include both a valid email and password");
-  } else if (emailHasUser(submittedEmail, users)) {
-    res.status(400).send("An account already exists for this email address");
+  } else if (getUserByEmail(submittedEmail, users)) {
+    res.status(400).send("An account already exists with this email address");
   } else {
     const newUserID = generateRandomString(10);
     users[newUserID] = {
@@ -155,8 +156,7 @@ app.post("/register", (req, res) => {
 app.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
-
-  if (!emailHasUser(email, users)) {
+  if (!getUserByEmail(email, users)) {
     res.status(403).send("There is no account associated with this email address");
   } else {
     const userID = userIdFromEmail(email, users);

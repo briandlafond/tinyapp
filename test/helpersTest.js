@@ -1,6 +1,6 @@
 const { assert } = require('chai');
 
-const { generateRandomString, emailHasUser, userIdFromEmail, urlsForUser, cookieHasUser } = require('../helpers');
+const { generateRandomString, userIdFromEmail, urlsForUser, cookieHasUser, getUserByEmail } = require('../helpers');
 
 const testUsers = {
   "user1RandomID": {
@@ -25,7 +25,7 @@ const testUrlDatabase = {
     userID: "user1RandomID"
   },
   "mjqcht": {
-    longUrl: "http://www.zara.com",
+    longUrl: "http://www.instagram.com",
     userID: "user2RandomID"
   }
 };
@@ -60,16 +60,16 @@ describe('userIdFromEmail', function() {
   });
 });
 
-describe('emailHasUser', function() {
+describe('getUserByEmail', function() {
   
-  it('should return email if email corresponds to a user in the database', function() {
-    const existingEmail = emailHasUser("user1@example.com", testUsers);
-    const expectedOutput = "user1@example.com";
+  it('should return true if email belongs to a user in the database', function() {
+    const existingEmail = getUserByEmail("user1@example.com", testUsers);
+    const expectedOutput = true;
     assert.equal(existingEmail, expectedOutput);
   });
 
-  it('should return false if email does not correspond to a user in the database', function() {
-    const nonExistantEmail = emailHasUser("fake_email@test.com", testUsers);
+  it('should return false if email does not belong to a user in the database', function() {
+    const nonExistantEmail = getUserByEmail("fake_email@test.com", testUsers);
     const expectedOutput = false;
     assert.equal(nonExistantEmail, expectedOutput);
   });

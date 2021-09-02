@@ -18,15 +18,6 @@ const userIdFromEmail = function(email, userDatabase) {
   }
 };
 
-const emailHasUser = function(email, users) {
-  for (const user in users) {
-    if (users[user].email === email) {
-      return users[user];
-    }
-  }
-  return false;
-};
-
 const urlsForUser = function(id, urlDatabase) {
   const userUrls = {};
   for (const shortURL in urlDatabase) {
@@ -49,17 +40,16 @@ const cookieHasUser = function(cookie, userDatabase) {
 const getUserByEmail = function(email, userDatabase) {
   for (const user in userDatabase) {
     if (userDatabase[user].email === email) {
-      return user;
+      return true;
     }
   }
   return false;
 };
 
-module.exports = { 
-  generateRandomString, 
-  userIdFromEmail, 
-  emailHasUser, 
+module.exports = {
+  generateRandomString,
+  userIdFromEmail,
   urlsForUser,
-  cookieHasUser, 
+  cookieHasUser,
   getUserByEmail
 };
