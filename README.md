@@ -4,16 +4,16 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-# Register view
+### Register view
 !["register page"](https://github.com/briandlafond/tinyapp/blob/main/docs/register-page.png)
 
-# Login view
+### Login view
 !["login page"](https://github.com/briandlafond/tinyapp/blob/main/docs/login-page.png)
 
-# urls view
+### urls view
 !["urls page"](https://github.com/briandlafond/tinyapp/blob/main/docs/user-urls.png)
 
-# short urls view
+### short urls view
 !["short urls page"](https://github.com/briandlafond/tinyapp/blob/main/docs/short-url.png)
 
 
