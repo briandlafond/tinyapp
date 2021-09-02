@@ -1,6 +1,7 @@
-
+// variable used for function encoding. 
 const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+// function to generate random string for encoding purposes.
 const generateRandomString = function(length) {
   let result = '';
   const charactersLength = characters.length;
@@ -10,6 +11,7 @@ const generateRandomString = function(length) {
   return result;
 };
 
+// function to grab a user ID from email address in database.
 const userIdFromEmail = function(email, userDatabase) {
   for (const user in userDatabase) {
     if (userDatabase[user].email === email) {
@@ -18,6 +20,7 @@ const userIdFromEmail = function(email, userDatabase) {
   }
 };
 
+// function to grab short urls from a specific user in user database.
 const urlsForUser = function(id, urlDatabase) {
   const userUrls = {};
   for (const shortURL in urlDatabase) {
@@ -28,6 +31,7 @@ const urlsForUser = function(id, urlDatabase) {
   return userUrls;
 };
 
+// function to determine if a user in user database has a cookie set.
 const cookieHasUser = function(cookie, userDatabase) {
   for (const user in userDatabase) {
     if (cookie === user) {
@@ -36,7 +40,7 @@ const cookieHasUser = function(cookie, userDatabase) {
   } return false;
 };
 
-
+// function to grab user in user database by email address.
 const getUserByEmail = function(email, userDatabase) {
   for (const user in userDatabase) {
     if (userDatabase[user].email === email) {
