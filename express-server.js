@@ -1,3 +1,4 @@
+// dependancy requirements.
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieSession = require('cookie-session');
@@ -21,7 +22,7 @@ const users = {};
 
 // ***** ROUTES *****
 
-app.get("/", (req, res) => {      // "/" = routes to home page or root.
+app.get("/", (req, res) => {      // "/" = route to home page or root.
   if (cookieHasUser(req.session.userID, users)) {
     res.redirect("/urls");
   } else {
@@ -161,7 +162,7 @@ app.post("/login", (req, res) => {
   } else {
     const userID = userIdFromEmail(email, users);
     if (!bcrypt.compareSync(password, users[userID].password)) {
-      res.status(403).send("The password you entered does not match the one associated with the provided email address");
+      res.status(403).send("The password you entered does not match the one associated with the email address provided");
     } else {
       req.session.userID = userID;
       res.redirect("/urls");

@@ -6,38 +6,36 @@ const testUsers = {
   "user1RandomID": {
     id: "user1RandomID",
     email: "user1@example.com",
-    password: "purple-monkey-dinosaur"
+    password: "passwordOne"
   },
   "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "blue-chimp-trex"
+    password: "passwordTwo"
   }
 };
 
 const testUrlDatabase = {
-  "bfjqot": {
+  "b2xVn2": {
     longUrl: "http://www.lighthouselabs.ca",
     userID: "user1RandomID"
   },
-  "htlams": {
+  "9sm5xK": {
     longUrl: "http://www.google.com",
     userID: "user1RandomID"
   },
-  "mjqcht": {
+  "j4cf7y": {
     longUrl: "http://www.instagram.com",
     userID: "user2RandomID"
   }
 };
 
 describe('generateRandomString', function() {
-
   it('should return a string with six characters', function() {
     const randomStringLength = generateRandomString(6).length;
     const expectedOutput = 6;
     assert.equal(randomStringLength, expectedOutput);
   });
-
   it('should not return the same string when called multiple times', function() {
     const firstRandomString = generateRandomString(6);
     const secondRandomString = generateRandomString(6);
@@ -46,13 +44,11 @@ describe('generateRandomString', function() {
 });
 
 describe('userIdFromEmail', function() {
-
   it('should return a user with a valid email', function() {
     const user = userIdFromEmail("user1@example.com", testUsers);
     const expectedOutput = "user1RandomID";
     assert.equal(user, expectedOutput);
   });
-
   it('should return undefined when no user exists for a given email address', function() {
     const user = userIdFromEmail("me@test.com", testUsers);
     const expectedOutput = undefined;
@@ -61,37 +57,33 @@ describe('userIdFromEmail', function() {
 });
 
 describe('getUserByEmail', function() {
-  
   it('should return true if email belongs to a user in the database', function() {
     const existingEmail = getUserByEmail("user1@example.com", testUsers);
     const expectedOutput = true;
     assert.equal(existingEmail, expectedOutput);
   });
-
   it('should return false if email does not belong to a user in the database', function() {
-    const nonExistantEmail = getUserByEmail("fake_email@test.com", testUsers);
+    const nonExistingEmail = getUserByEmail("wrongemail@test.com", testUsers);
     const expectedOutput = false;
-    assert.equal(nonExistantEmail, expectedOutput);
+    assert.equal(nonExistingEmail, expectedOutput);
   });
 });
 
 describe('urlsForUser', function() {
-
   it('should return an object of url information specific to the given user ID', function() {
     const specificUrls = urlsForUser("user1RandomID", testUrlDatabase);
     const expectedOutput = {
-      "bfjqot": {
+      "b2xVn2": {
         longUrl: "http://www.lighthouselabs.ca",
         userID: "user1RandomID"
       },
-      "htlams": {
+      "9sm5xK": {
         longUrl: "http://www.google.com",
         userID: "user1RandomID"
       }
     };
     assert.deepEqual(specificUrls, expectedOutput);
   });
-
   it('should return an empty object if no urls exist for a given user ID', function() {
     const noSpecificUrls = urlsForUser("fakeUser", testUrlDatabase);
     const expectedOutput = {};
@@ -100,13 +92,11 @@ describe('urlsForUser', function() {
 });
 
 describe('cookieHasUser', function() {
-
   it('should return true if a cookie corresponds to a user in the database', function() {
     const existingCookie = cookieHasUser("user1RandomID", testUsers);
     const expectedOutput = true;
     assert.equal(existingCookie, expectedOutput);
   });
-
   it('should return false if a cookie does not correspond to a user in the database', function() {
     const nonExistantCookie = cookieHasUser("user3RandomID", testUsers);
     const expectedOutput = false;
