@@ -72,16 +72,20 @@ app.get("/login", (req, res) => {
 });
 
 app.get("/urls/:shortURL", (req, res) => {
-  if (urlDatabase[req.params.shortURL]) {
-    let templateVars = {
-      shortURL: req.params.shortURL,
-      longURL: urlDatabase[req.params.shortURL].longURL,
-      urlUserID: urlDatabase[req.params.shortURL].userID,
-      user: users[req.session.userID],
-    };
-    res.render("urls_show", templateVars);
+  if (req.session.userID) {
+    if (urlDatabase[req.params.shortURL]) {
+      let templateVars = {
+        shortURL: req.params.shortURL,
+        longURL: urlDatabase[req.params.shortURL].longURL,
+        urlUserID: urlDatabase[req.params.shortURL].userID,
+        user: users[req.session.userID],
+      };
+      res.render("urls_show", templateVars);
+    } else {
+      res.status(404).send("The short URL you entered does not correspond with a long URL at this time.");
+    }
   } else {
-    res.status(404).send("The short URL you entered does not correspond with a long URL at this time.");
+    res.status(401).send("You do not have permission to view this url. Please Register or Login to TinyApp.");
   }
 });
 
