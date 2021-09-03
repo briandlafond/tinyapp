@@ -31,7 +31,7 @@ app.get("/", (req, res) => {      // "/" = route to home page or root.
 });
 
 app.get("/urls", (req, res) => {
-  let templateVars = {
+  const templateVars = {
     urls: urlsForUser(req.session.userID, urlDatabase),
     user: users[req.session.userID],
   };
@@ -42,7 +42,7 @@ app.get("/urls/new", (req, res) => {
   if (!cookieHasUser(req.session.userID, users)) {
     res.redirect("/login");
   } else {
-    let templateVars = {
+    const templateVars = {
       user: users[req.session.userID],
     };
     res.render("urls_new", templateVars);
@@ -53,7 +53,7 @@ app.get("/register", (req, res) => {
   if (cookieHasUser(req.session.userID, users)) {
     res.redirect("/urls");
   } else {
-    let templateVars = {
+    const templateVars = {
       user: users[req.session.userID],
     };
     res.render("urls_registration", templateVars);
@@ -64,7 +64,7 @@ app.get("/login", (req, res) => {
   if (cookieHasUser(req.session.userID  , users)) {
     res.redirect("/urls");
   } else {
-    let templateVars = {
+    const templateVars = {
       user: users[req.session.user_id],
     };
     res.render("urls_login", templateVars);
@@ -74,7 +74,7 @@ app.get("/login", (req, res) => {
 app.get("/urls/:shortURL", (req, res) => {
   if (req.session.userID) {
     if (urlDatabase[req.params.shortURL]) {
-      let templateVars = {
+      const templateVars = {
         shortURL: req.params.shortURL,
         longURL: urlDatabase[req.params.shortURL].longURL,
         urlUserID: urlDatabase[req.params.shortURL].userID,
