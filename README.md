@@ -8,7 +8,7 @@ TinyApp is a full stack web application built with Node and Express that allows 
 !["register page"](https://github.com/briandlafond/tinyapp/blob/main/docs/register-page.png)
 
 ### Login view
-!["login page"](https://github.com/briandlafond/tinyapp/blob/main/docs/login-page.png)
+!["login page"](https://github.com/briandlafond/tinyapp/blob/master/docs/login-page.png?raw=true)
 
 ### urls view
 !["urls page"](https://github.com/briandlafond/tinyapp/blob/main/docs/user-urls.png)
